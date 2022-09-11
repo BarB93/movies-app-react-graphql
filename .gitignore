@@ -1,3 +1,4 @@
 server/node_modules
 server/dist
 server/yarn-error.log
+server/schema.gql

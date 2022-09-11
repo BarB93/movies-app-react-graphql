@@ -1,20 +1,29 @@
+import 'reflect-metadata'
+import { buildSchema } from 'type-graphql'
 import express from 'express'
 import { graphqlHTTP } from 'express-graphql'
-// import schema, { root } from './schema/schema'
-import schema from './schema/schema'
+import { MoviesResolver } from './schema/movie/movie.resolvers'
 
-const app = express()
-const PORT = 5000
+async function main() {
+  const schema = await buildSchema({
+    resolvers: [MoviesResolver],
+    emitSchemaFile: true,
+  })
 
-app.use(
-  '/graphql',
-  graphqlHTTP({
-    schema,
-    graphiql: true,
-    // rootValue: root,
-  }),
-)
+  const app = express()
+  const PORT = 5000
 
-app.listen(PORT, () => {
-  console.log(`Running on port ${PORT}`)
-})
+  app.use(
+    '/graphql',
+    graphqlHTTP({
+      schema,
+      graphiql: true,
+    }),
+  )
+
+  app.listen(PORT, () => {
+    console.log(`Running on port ${PORT}`)
+  })
+}
+
+main()
